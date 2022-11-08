@@ -1,0 +1,22 @@
+{
+  "name": "1password-postman-integration",
+  "version": "1.0.0",
+  "description": "script to automate the integration of secrets in 1password into your postman requests",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1Password/1password-postman-integration.git"
+  },
+  "author": "Kai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1Password/1password-postman-integration/issues"
+  },
+  "homepage": "https://github.com/1Password/1password-postman-integration#readme"
+}
