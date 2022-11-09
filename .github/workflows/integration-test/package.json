@@ -1,0 +1,25 @@
+{
+  "name": "1p-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc301-fall-2022/team-project-26-1password-product-team-t.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/csc301-fall-2022/team-project-26-1password-product-team-t/issues"
+  },
+  "homepage": "https://github.com/csc301-fall-2022/team-project-26-1password-product-team-t#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "newman": "^5.3.2",
+    "nodemon": "^2.0.20"
+  }
+}
