@@ -12,6 +12,10 @@ program.command('insert-secret')
   .argument('<secret>', '1password secret resource path')
   .argument('<collection>', 'collection configuration to insert')
   .action((secret, collection, options) => {
+    const re = new RegExp('op:\/\/')
+    if(!re.test(secret)){
+      console.log('Error: invalid secret path')
+    }
     console.log('secret:', secret);
     console.log('collection:', collection);
     console.log('options:', options.mode);
