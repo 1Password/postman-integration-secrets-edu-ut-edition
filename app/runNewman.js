@@ -1,19 +1,22 @@
-const newman = require('newman');
+import {fetchSecret} from "./fetchSecret.js";
+import {Command} from "commander";
+import {readFileSync} from "fs";
 
-function getApiKey() {
-    // This is a mock function for testing
-    return ["api_key", "test"];
-}
+import newman from "newman";
 
 function processApiKeyItem(item) {
     for (let key of item.request.auth.apikey) {
-        const [key_name, key_value] = getApiKey();
+        const program = new Command();
+        let apikey = "empty";
+        fetchSecret(program, "some path").then(value => {
+            apikey = value
+        });
         switch (key.key) {
             case "value":
-                key.value = key_value;
+                key.value = apikey;
                 break;
             case "key":
-                key.value = key_name;
+                key.value = "apikey";
                 break;
         }
     }
@@ -28,7 +31,7 @@ function processCollectionItem(item) {
 }
 
 function runNewman(collection_file, output) {
-    let collection = require(collection_file);
+    let collection = JSON.parse(readFileSync(collection_file));
     for (let item of collection.item) {
         processCollectionItem(item);
     }
