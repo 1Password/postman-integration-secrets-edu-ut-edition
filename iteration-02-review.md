@@ -29,10 +29,8 @@ List **process-related** (i.e. team organization and how you work) decisions tha
 
 List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, were not as successful as you thought they would be.
 
- * 2 - 4 decisions.
- * Ordered from most to least important.
- * Explain why (i.e. give a supporting argument) you consider a decision to be unsuccessful
- * Feel free to refer/link to process artifact(s).
+ * We assumed our weekly meetings were more going to be each team member giving updates about what their progress/blockers in a structured manner. However, due to the nature of our project, we required the meetings more for planning out the details of our project than a standup. We did not expect the planning phase to be as challenging and take as much time as it did.
+ * We also leaned towards setting soft deadlines rather than strict ones for the planning phase. The reasoning behind this decision was that we wanted everyone to have a chance to develop a good understanding of the project and have an adequate amount of time to come up with implementation ideas. As a consequence, the implementation phase had a tighter deadlines than what we would've liked.
 
 
 #### Q3. Planned changes
