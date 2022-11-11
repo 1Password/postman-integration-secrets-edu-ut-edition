@@ -14,7 +14,7 @@ program.command('insert-secret')
   .action((secret, collection, options) => {
     const re = new RegExp('op:\/\/')
     if(!re.test(secret)){
-      console.log('Error: invalid secret path')
+      throw 'Error: invalid secret path';
     }
     console.log('secret:', secret);
     console.log('collection:', collection);
