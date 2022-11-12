@@ -32,9 +32,9 @@ export async function fetchSecret(program, secretPath) {
  */
  export async function fetchBasicAuthCredentials(program, secretItemPath) {
   
-  const usernameField = `${secretItemPath.replace(/\/$/, "")}/username`;
+  const usernameField = `${secretItemPath}/username`;
   const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath.replace(/\/$/, "")}/password`; 
+  const passwordField = `${secretItemPath}/password`; 
   const password = await fetchSecret(program, passwordField);
 
   if (!password || !username) {
