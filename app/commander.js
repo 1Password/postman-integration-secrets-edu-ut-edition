@@ -6,8 +6,8 @@ program
   .description('CLI to apply 1password secrets in postman')
   .version('0.0.1');
 
-program.command('insert-secret')
-  .description('Secify if it is for testing or production')
+program.command('run-collection')
+  .description('Run Postman collection with 1password secret')
   .option('--mode <char>, -m <char>', 'Secify if it is for testing(t) or production(p)', 'p')
   .argument('<secret>', '1password secret resource path')
   .argument('<collection>', 'collection configuration to insert')
