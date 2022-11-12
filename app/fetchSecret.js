@@ -30,7 +30,7 @@ export async function fetchSecret(program, secretPath) {
  * @param {string} secretPath - Path in 1Password to secret item
  * @returns - Basic Authentication credentials
  */
- export async function fetchBasicAuth(program, secretItemPath) {
+ export async function fetchBasicAuthCredentials(program, secretItemPath) {
   
   const usernameField = `${secretItemPath.replace(/\/$/, "")}/username`;
   const username = await fetchSecret(program, usernameField);
