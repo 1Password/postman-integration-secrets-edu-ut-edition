@@ -4,45 +4,25 @@ import {readFileSync} from "fs";
 
 import newman from "newman";
 
-function processApiKeyItem(item) {
-    for (let key of item.request.auth.apikey) {
-        const program = new Command();
-        let apikey = "empty";
-        fetchSecret(program, "some path").then(value => {
-            apikey = value
-        });
-        switch (key.key) {
-            case "value":
-                key.value = apikey;
-                break;
-            case "key":
-                key.value = "apikey";
-                break;
+function processCollectionItem(item, secret) {
+    for (let key of item.request.auth[item.request.auth.type]) {
+        if (secret[key.key] !== undefined) {
+            key.value = secret[key.key];
+        } else {
+            console.log("Secret not found: " + key.key);
         }
     }
 }
 
-function processCollectionItem(item) {
-    switch (item.request.auth.type) {
-        case "apikey":
-            processApiKeyItem(item);
-            break;
-    }
-}
-
-function runNewman(collection_file, output) {
-    let collection = JSON.parse(readFileSync(collection_file));
+async function runNewman(collectionPath, secretPath) {
+    let collection = JSON.parse(readFileSync(collectionPath));
+    const program = new Command();
+    const secret = await fetchSecret(program, secretPath);
     for (let item of collection.item) {
-        processCollectionItem(item);
+        processCollectionItem(item, secret);
     }
     newman.run({
         collection: collection,
-        reporters: 'json',
-        reporter: {
-            json: {
-                export: output,
-            },
-        }
     }, function (err) {
         if (err) {
             throw err;
