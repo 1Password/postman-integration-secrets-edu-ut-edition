@@ -8,15 +8,17 @@ program
 
 program.command('insert-secret')
   .description('Secify if it is for testing or production')
-  .option('--mode, -m', 'Secify if it is for testing(t) or production(p)', 'p')
-  .argument('<string>', '1password secret resource path')
-  .argument('<string>, <object>', 'collection configuration to insert')
+  .option('--mode <char>, -m <char>', 'Secify if it is for testing(t) or production(p)', 'p')
+  .argument('<secret>', '1password secret resource path')
+  .argument('<collection>', 'collection configuration to insert')
+  .action((secret, collection, options) => {
+    const re = new RegExp('op:\/\/')
+    if(!re.test(secret)){
+      throw 'Error: invalid secret path';
+    }
+    console.log('secret:', secret);
+    console.log('collection:', collection);
+    console.log('options:', options.mode);
+  });
 
 program.parse();
-
-const options = program.opts()
-if (options.mode == 't') {
-    pass;
-} else if (options.mode == 'p'){
-    pass;
-}
