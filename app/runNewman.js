@@ -14,15 +14,15 @@ export function processCollectionItem(item, secret) {
     }
 }
 
-export async function runNewman(collectionPath, secretPath) {
+export async function runNewman(program, collectionPath, secretPath) {
     let collection = JSON.parse(readFileSync(collectionPath));
-    const program = new Command();
     const secret = await fetchBasicAuthCredentials(program, secretPath);
     for (let item of collection.item) {
         processCollectionItem(item, secret);
     }
     newman.run({
         collection: collection,
+        reporters: "cli"
     }, function (err) {
         if (err) {
             throw err;
