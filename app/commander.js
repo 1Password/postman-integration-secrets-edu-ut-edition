@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+import {runNewman} from "./runNewman.js";
 const program = new Command();
 
 program
@@ -19,6 +20,7 @@ program.command('run-collection')
     console.log('secret:', secret);
     console.log('collection:', collection);
     console.log('options:', options.mode);
+    runNewman(program, collection, secret);
   });
 
 program.parse();
