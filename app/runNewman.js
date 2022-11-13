@@ -4,7 +4,7 @@ import {readFileSync} from "fs";
 
 import newman from "newman";
 
-function processCollectionItem(item, secret) {
+export function processCollectionItem(item, secret) {
     for (let key of item.request.auth[item.request.auth.type]) {
         if (secret[key.key] !== undefined) {
             key.value = secret[key.key];
@@ -14,7 +14,7 @@ function processCollectionItem(item, secret) {
     }
 }
 
-async function runNewman(collectionPath, secretPath) {
+export async function runNewman(collectionPath, secretPath) {
     let collection = JSON.parse(readFileSync(collectionPath));
     const program = new Command();
     const secret = await fetchSecret(program, secretPath);
