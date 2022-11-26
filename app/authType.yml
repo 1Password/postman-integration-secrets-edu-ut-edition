@@ -1,0 +1,11 @@
+NoAuth:
+ApiKey:
+Bearer:
+Basic:
+Digest:
+OAuth1:
+OAuth2:
+Hawk:
+AWS:
+NTLM:
+Akamai:
