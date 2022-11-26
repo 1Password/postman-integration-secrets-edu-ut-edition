@@ -1,3 +1,4 @@
+// utility file for checking if configuration is correct
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 try {
