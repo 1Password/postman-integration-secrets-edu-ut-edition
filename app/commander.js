@@ -3,7 +3,7 @@ import {runNewman} from "./runNewman.js";
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 const program = new Command();
-
+const path = process.cwd();
 program
   .name('1password-postman')
   .description('CLI to apply 1password secrets in postman')
@@ -20,17 +20,16 @@ program.command('run-collection')
     if(!re.test(secret)){
       throw 'Error: invalid secret path';
     }
-    const doc = yaml.load(fs.readFileSync('app/authType.yml', 'utf8'));
+    const doc = yaml.load(fs.readFileSync(path + '/authType.yml', 'utf8'));
     if(!(options.type in doc)){
       throw 'Error: type not valid. Allowed types are NoAuth, ApiKey, Bearer\n' +
             'Basic, Digest, OAuth1, OAuth2, Hawk, AWS, NTLM, Akamai';
     }
-  
     console.log('secret:', secret);
     console.log('collection:', collection);
     console.log('options:', options.mode);
     console.log('type:', options.type);
-    //runNewman(program, collection, secret, type);
+    runNewman(program, collection, secret, type);
   });
 
 program.parse();

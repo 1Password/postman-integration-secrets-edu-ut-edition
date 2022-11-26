@@ -1,10 +1,10 @@
-import {fetchSecret} from "./fetchSecret.js";
+import {fetchBasicAuthCredentials} from "./fetchSecret.js";
 import {Command} from "commander";
 import {readFileSync} from "fs";
 
 import newman from "newman";
 
-function processCollectionItem(item, secret) {
+export function processCollectionItem(item, secret) {
     for (let key of item.request.auth[item.request.auth.type]) {
         if (secret[key.key] !== undefined) {
             key.value = secret[key.key];
@@ -14,15 +14,15 @@ function processCollectionItem(item, secret) {
     }
 }
 
-async function runNewman(collectionPath, secretPath) {
+export async function runNewman(program, collectionPath, secretPath) {
     let collection = JSON.parse(readFileSync(collectionPath));
-    const program = new Command();
-    const secret = await fetchSecret(program, secretPath);
+    const secret = await fetchBasicAuthCredentials(program, secretPath);
     for (let item of collection.item) {
         processCollectionItem(item, secret);
     }
     newman.run({
         collection: collection,
+        reporters: "cli"
     }, function (err) {
         if (err) {
             throw err;
