@@ -1,5 +1,5 @@
-NoAuth:
-ApiKey:
+noauth:
+apikey:
   Key: 
     required: true
   Value: 
@@ -9,15 +9,15 @@ ApiKey:
     options:
       - Header
       - QueryParams
-Bearer:
+bearer:
   Token: 
     required: true
-Basic:
+basic:
   Username: 
     required: true
   Password: 
     required: true
-Digest:
+digest:
   Username: 
     required: true
   Password: 
@@ -45,7 +45,7 @@ Digest:
     required: false
   Opaque:
     required: false
-OAuth1:
+oauth1:
   AddAuthDataTo:
     required: true
     options:
@@ -86,7 +86,7 @@ OAuth1:
     default: 1.0
   Realm:
     required: false
-OAuth2:
+oauth2:
   AddAuthDataTo:
     required: true
     options:
@@ -95,7 +95,7 @@ OAuth2:
     default:
       RequestURL
   # too much ...
-Hawk:
+hawk:
   HawkAuthID:
     required: true
   HawkAuthKey:
@@ -117,7 +117,7 @@ Hawk:
     required: false
   Timestamp:
     required: false  
-AWS:
+aws:
   AddAuthDataTo:
     required: true
     options:
@@ -133,7 +133,7 @@ AWS:
     required: false
   SessionToken:
     required: false
-NTLM:
+ntlm:
   Username:
     required: true
   Password:
@@ -142,7 +142,7 @@ NTLM:
     required: false
   Workstation:
     required: false
-Akamai:
+akamai:
   AccessToken:
     required: true
   ClientToken:
