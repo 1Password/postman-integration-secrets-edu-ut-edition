@@ -2,9 +2,7 @@ import * as yaml from 'js-yaml';
 import * as fs from 'fs';
 try {
     const doc = yaml.load(fs.readFileSync('app/authType.yml', 'utf8'));
-    if('NoAuth' in doc){
-        console.log(doc);
-    }
+    console.log(doc);
     
   } catch (e) {
     console.log(e);
