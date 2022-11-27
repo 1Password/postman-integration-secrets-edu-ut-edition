@@ -1,4 +1,4 @@
-import { inject, validateCli } from "@1password/op-js";
+import { validateCli, item } from "@1password/op-js";
 
 /**
  * Fetch secret from 1Password CLI
@@ -6,7 +6,7 @@ import { inject, validateCli } from "@1password/op-js";
  * @param {string} secretPath - Path in 1Password to secret
  * @returns - Secret
  */
-export async function fetchSecret(program, secretPath) {
+ export async function fetchSecret(program, secretPath) {
   try {
     await validateCli();
   } catch(error) {
@@ -14,10 +14,10 @@ export async function fetchSecret(program, secretPath) {
     program.error(error.message);
     return ;
   }
-
+  const [vault, name, field] = secretPath.slice(5).split('/');
   try {
-    const data = inject.data(secretPath);
-    return data;
+    const data = item.get(name, {fields: [field], vault: vault});
+    return data.value;
   } catch(error) {
     return ;
   }
@@ -31,10 +31,9 @@ export async function fetchSecret(program, secretPath) {
  * @returns - Basic Authentication credentials
  */
  export async function fetchBasicAuthCredentials(program, secretItemPath) {
-  
   const usernameField = `${secretItemPath}/username`;
   const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/password`; 
+  const passwordField = `${secretItemPath}/credential`; 
   const password = await fetchSecret(program, passwordField);
 
   if (!password || !username) {
