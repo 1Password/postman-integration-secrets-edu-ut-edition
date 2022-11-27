@@ -25,6 +25,53 @@ import { validateCli, item } from "@1password/op-js";
 }
 
 /**
+ * Fetch all fields of a secret from 1Password CLI
+ * 
+ * @param {any} program - CLI (for logging errors)
+ * @param {string} secretId - ID of secret
+ * @returns - all fields in the secret
+ */
+ export async function fetchSecretFields(program, secretId) {
+  try {
+    await validateCli();
+  } catch(error) {
+    // User has not installed 1Password CLI, send error message
+    program.error(error.message);
+    return ;
+  }
+  try {
+    const data = item.get(secretId);
+    return data.fields;
+  } catch(error) {
+    return ;
+  }
+  
+}
+
+/**
+ * Fetch all secrets from 1Password CLI
+ * @param {any} program - CLI (for logging errors)
+ * @returns - secrets
+ */
+ export async function fetchAllSecrets(program) {
+  try {
+    await validateCli();
+  } catch(error) {
+    // User has not installed 1Password CLI, send error message
+    program.error(error.message);
+    return ;
+  }
+
+  try {
+    const data = item.list();
+    return data;
+  } catch(error) {
+    return ;
+  }
+  
+}
+
+/**
  * Fetch Basic Authentication credentials from 1Password CLI
  * @param {any} program - CLI (for logging errors)
  * @param {string} secretPath - Path in 1Password to secret item
