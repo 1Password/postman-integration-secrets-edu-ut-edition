@@ -21,7 +21,8 @@ program.command('run-collection')
       throw 'Error: invalid secret path';
     }
     const doc = yaml.load(fs.readFileSync(path + '/authType.yml', 'utf8'));
-    if(!(options.type.toLowerCase() in doc)){
+    const type_lower = options.type.toLowerCase()
+    if(!(type_lower in doc)){
       throw 'Error: type not valid. Allowed types are NoAuth, ApiKey, Bearer\n' +
             'Basic, Digest, OAuth1, OAuth2, Hawk, AWS, NTLM, Akamai';
     }
@@ -29,7 +30,7 @@ program.command('run-collection')
     console.log('collection:', collection);
     console.log('options:', options.mode);
     console.log('type:', options.type);
-    runNewman(program, collection, secret, type);
+    runNewman(program, collection, secret, type_lower);
   });
 
 program.parse();
