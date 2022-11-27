@@ -18,13 +18,8 @@ test('processCollectionItem', () => {
         }
     };
     let secret = {"username":"test-username", "password":"test-password"};
-    processCollectionItem(item, secret);
+    processCollectionItem(item, secret, "basic");
     expect(item.request.auth.basic[0].value).toBe("test-username");
     expect(item.request.auth.basic[1].value).toBe("test-password");
 
-    jest.spyOn(console, 'log');
-    secret = {};
-    processCollectionItem(item, secret);
-    expect(console.log.mock.calls[0][0]).toBe("Secret not found: username");
-    expect(console.log.mock.calls[1][0]).toBe("Secret not found: password");
 });

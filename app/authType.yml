@@ -1,0 +1,160 @@
+noauth:
+apikey:
+  Key: 
+    required: true
+  Value: 
+    required: true
+  AddTo: 
+    required: false
+    options:
+      - Header
+      - QueryParams
+bearer:
+  Token: 
+    required: true
+basic:
+  Username: 
+    required: true
+  Password: 
+    required: true
+digest:
+  Username: 
+    required: true
+  Password: 
+    required: true
+  Realm: 
+    required: false
+  Nonce:
+    required: false
+  Algorithm: 
+    required: false
+    options:
+      - MD5
+      - MD5-sess
+      - SHA-256
+      - SHA-256-sess
+      - SHA-512-256
+      - SHA-512-256-sess
+    default:
+      MD5
+  qop: 
+    required: false
+  NonceCount:
+    required: false
+  ClientNonce:
+    required: false
+  Opaque:
+    required: false
+oauth1:
+  AddAuthDataTo:
+    required: true
+    options:
+      - RequestBody/RequestURL
+      - RequestHeaders
+    default:
+      RequestBody/RequestURL
+  SignatureMethod:
+    required: true
+    options:
+      - HMAC-SHA1
+      - HMAC-SHA256
+      - HMAC-SHA512
+      - RSA-SHA1
+      - RSA-SHA256
+      - RSA-SHA512
+      - PLAINTEXT
+    default:
+      HMAC-SHA1
+  ConsumerKey:
+    required: true
+  ConsumerSecret:
+    required: true
+  AccessToken:
+    required: true
+  TokenSecret:
+    required: true
+  CallbackUrl:
+    required: false
+  Verifier:
+    required: false
+  Timestamp:
+    required: false
+  Nonce:
+    required: false
+  Version:
+    required: false
+    default: 1.0
+  Realm:
+    required: false
+oauth2:
+  AddAuthDataTo:
+    required: true
+    options:
+      - RequestURL
+      - RequestHeaders
+    default:
+      RequestURL
+  # too much ...
+hawk:
+  HawkAuthID:
+    required: true
+  HawkAuthKey:
+    required: true
+  Algorithm:
+    required: true
+    options:
+      - sha256
+      - sha1
+  User:
+    required: false
+  Nonce:
+    required: false
+  ext:
+    required: false
+  app:
+    required: false
+  dlg:
+    required: false
+  Timestamp:
+    required: false  
+aws:
+  AddAuthDataTo:
+    required: true
+    options:
+      - RequestHeaders
+      - RequestURL
+  AccessKey:
+    required: true
+  SecretKey:
+    required: true
+  AWSRegion:
+    required: false
+  ServiceName:
+    required: false
+  SessionToken:
+    required: false
+ntlm:
+  Username:
+    required: true
+  Password:
+    required: true
+  Domain:
+    required: false
+  Workstation:
+    required: false
+akamai:
+  AccessToken:
+    required: true
+  ClientToken:
+    required: true
+  ClientSecret:
+    required: true
+  Nonce:
+    required: false
+  Timestamp:
+    required: false
+  BaseURL:
+    required: false
+  HeadersToSign:
+    required: false
+  
