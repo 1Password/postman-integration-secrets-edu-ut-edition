@@ -11,11 +11,25 @@
  * This section will be used to assess the value of the features built
 
 ## Instructions
- * Clear instructions for how to use the application from the end-user's perspective
- * How do you access it? Are accounts pre-created or does a user register? Where do you start? etc. 
- * Provide clear steps for using each feature described above
- * This section is critical to testing your application and must be done carefully and thoughtfully
- 
+
+### Setup
+  * [Generate a Postman API Key](https://learning.postman.com/docs/developer/intro-api/#generating-a-postman-api-key) to (required to allow CLI to inject secrets)
+  * Store the Postman API Key in 1Password as an API Credential: ![](./assets/1password-postman-api.png)
+
+### Commands 
+
+  * `inject-secrets`
+
+  Option | Description | Optional | Default | Example
+  --- | --- | --- | --- | ---
+  `-s <POSTMAN-SECRET-PATH>` | The path in 1password to your Postman API Credential. | Yes | If this value is not passed in, the existence of the `POSTMAN_API_CREDENTIAL` environment variable by default. | `-s op://VAULT/SECRET-NAME` 
+  `-e <POSTMAN-ENV-NAME>` | The name of the Postman Environment to inject secrets into. | Yes | `1password-secrets` | `-e secrets-from-1password` 
+  `-r` | Replace the entire Postman environment such that it only contains selected secrets. | Yes | Default behaviour is to merge selected secrets into environment with existing secrets. | `-r` 
+
+  #### Example: 
+  ![](./assets/inject-secrets-demo.gif)
+
+
  ## Development requirements
  * If a developer were to set this up on their machine or a remote server, what are the technical requirements (e.g. OS, libraries, etc.)?
  * Briefly describe instructions for setting up and running the application (think a true README).
