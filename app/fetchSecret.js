@@ -90,3 +90,21 @@ import { validateCli, item } from "@1password/op-js";
 
   return { username, password };
 }
+
+/**
+ * Fetch Bearer Token credentials from 1Password CLI
+ * @param {any} program - CLI (for logging errors)
+ * @param {string} secretPath - Path in 1Password to secret item
+ * @returns - Bearer Token credentials
+ */
+ export async function fetchBearerTokenCredentials(program, secretItemPath) {
+  
+  const tokenField = `${secretItemPath}/credential`;
+  const token = await fetchSecret(program, tokenField);
+  if (!token) {
+    program.error("Invalid Secret Path");
+    return {};
+  }
+
+  return { token };
+}
