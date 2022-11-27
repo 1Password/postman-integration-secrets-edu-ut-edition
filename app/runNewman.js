@@ -1,6 +1,5 @@
-import {fetchBasicAuthCredentials} from "./fetchSecret.js";
-import {Command} from "commander";
-import {readFileSync} from "fs";
+import { fetchBasicAuthCredentials } from "./fetchSecret.js";
+import { readFileSync } from "fs";
 
 import newman from "newman";
 
@@ -14,11 +13,15 @@ export function processCollectionItem(item, secret) {
     }
 }
 
-export async function runNewman(program, collectionPath, secretPath) {
+export async function runNewman(program, collectionPath, secretPath, authType) {
     let collection = JSON.parse(readFileSync(collectionPath));
-    const secret = await fetchBasicAuthCredentials(program, secretPath);
-    for (let item of collection.item) {
-        processCollectionItem(item, secret);
+    // TODO: add more auth types
+    const funcMap = {"basic": fetchBasicAuthCredentials};
+    if (authType !== "noauth") {
+        const secret = await funcMap[authType](program, secretPath);
+        for (let item of collection.item) {
+            processCollectionItem(item, secret);
+        }
     }
     newman.run({
         collection: collection,
