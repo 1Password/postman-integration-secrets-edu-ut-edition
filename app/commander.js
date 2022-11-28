@@ -23,7 +23,7 @@ program.command('run-collection')
     if(!re.test(secret)){
       throw 'Error: invalid secret path';
     }
-    const doc = yaml.load(fs.readFileSync(path + '/authType.yml', 'utf8'));
+    const doc = yaml.load(fs.readFileSync(path + '/app/authType.yml', 'utf8'));
     const type_lower = options.type.toLowerCase()
     if(!(type_lower in doc)){
       throw 'Error: type not valid. Allowed types are NoAuth, ApiKey, Bearer\n' +

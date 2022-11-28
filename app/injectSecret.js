@@ -115,7 +115,7 @@ export async function injectSecretIntoPostman(program, postmanSecret, secrets, e
   const {envName, replaceEnv} = env;
 
   const postmanCred = await fetchSecret(program, `${postmanSecret}/credential`);
-
+  
   const values = secrets.map((secret) => secretFieldToPostmanVar(secret));
   const body = {
     environment: {
@@ -126,6 +126,7 @@ export async function injectSecretIntoPostman(program, postmanSecret, secrets, e
 
   const updateEnvId = await envExists(postmanCred, envName);
   if(!!updateEnvId) {
+    console.log(values)
     await updateEnv(program, envName, postmanCred, updateEnvId, values, replaceEnv);
   } else {
     const data = await callPostmanApi(postmanCred, POSTMAN_ENV_API, 'post', body);

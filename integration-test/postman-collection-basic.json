@@ -39,35 +39,6 @@
 				}
 			},
 			"response": []
-		},
-		{
-			"name": "bearer-token-request",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "{{bearer-token}}",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/main",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"main"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [

@@ -1,0 +1,1 @@
+node app/commander.js inject-secrets -s op://Developer/postman-secret -e 1password-secret

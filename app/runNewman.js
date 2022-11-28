@@ -1,4 +1,4 @@
-import { fetchBasicAuthCredentials } from "./fetchSecret.js";
+import { fetchBasicAuthCredentials, fetchBearerTokenCredentials } from "./fetchSecret.js";
 import { readFileSync } from "fs";
 
 import newman from "newman";
@@ -23,7 +23,8 @@ export function processCollectionItem(item, secret, authType) {
 export async function runNewman(program, collectionPath, secretPath, authType) {
     let collection = JSON.parse(readFileSync(collectionPath));
     // TODO: add more auth types
-    const funcMap = {"basic": fetchBasicAuthCredentials};
+    const funcMap = {"basic": fetchBasicAuthCredentials,
+                     "bearer": fetchBearerTokenCredentials};
     if (authType !== "noauth") {
         const secret = await funcMap[authType](program, secretPath);
         for (let item of collection.item) {

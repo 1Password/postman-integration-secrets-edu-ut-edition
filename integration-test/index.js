@@ -21,16 +21,28 @@ const newman = require('newman'); // require newman in your project
 app.get('/main', (req, res, next) => {
     var authheader = req.headers.authorization;
     console.log(authheader);
-    var auth = new Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
-    var user = auth[0];
-    var pass = auth[1];
-    if (user == 'test' && pass == 'test'){
-        res.send('successfully authorized!');
-    } else {
-        var err = new Error('not authenticated');
-        res.setHeader('WWW-Authnticate', 'Basic');
-        err.status = 401;
-        return next(err);
+    if (authheader.startsWith("Basic")){
+        var auth = new Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
+        var user = auth[0];
+        var pass = auth[1];
+        if (user == 'test' && pass == 'test'){
+            res.send('successfully authorized!');
+        } else {
+            var err = new Error('not authenticated');
+            res.setHeader('WWW-Authnticate', 'Basic');
+            err.status = 401;
+            return next(err);
+        }
+    }
+    if (authheader.startsWith("Bearer")){
+        if (authheader.split(' ')[1] == 'test'){
+            res.send('successfully authorized!');
+        } else{
+            var err = new Error('not authenticated');
+            res.setHeader('WWW-Authnticate', 'Bearer');
+            err.status = 401;
+            return next(err);
+        }
     }
 })
 
