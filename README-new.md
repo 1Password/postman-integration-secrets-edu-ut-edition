@@ -41,17 +41,17 @@ Use the command as follows:
 node ./app/commander run-collection op://<VAULT-NAME>/<REQUEST-AUTH-DETAILS-ITEM> <PATH-TO-COLLECTION-JSON> --type <AUTH-TYPE>
 ```
 
-### Flags
-Option | Description | Optional | Default | Example
---- | --- | --- | --- | ---
-`-s <AUTH-TYPE>` | The type of the authorization for the Postman request. | Yes | `noauth` | `-type basic` 
-
 #### Example
 - Run the command with:
   - Path to the authentication details in 1Password (e.g. `op://Personal/Basic-Auth`)
   - Path to the collection JSON (e.g. `./postman-collection-basic`)
   - Authentication type (e.g. `basic`)
 - Request should be run without having to copy paste and of the required secrets.
+
+### Flags
+Option | Description | Optional | Default | Example
+--- | --- | --- | --- | ---
+`-s <AUTH-TYPE>` | The type of the authorization for the Postman request. | Yes | `noauth` | `-type basic` 
 
 ## `inject-secrets`
 
