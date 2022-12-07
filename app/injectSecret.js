@@ -100,6 +100,7 @@ async function updateEnv(program, envName, postmanCred, envId, secrets, replaceE
     }
   };
   const data = await callPostmanApi(postmanCred, `${POSTMAN_ENV_API}/${envId}`, 'put', body);
+  return data;
 }
 
 /**
@@ -125,10 +126,15 @@ export async function injectSecretIntoPostman(program, postmanSecret, secrets, e
   };
 
   const updateEnvId = await envExists(postmanCred, envName);
+  let data = null;
   if(!!updateEnvId) {
-    console.log(values)
-    await updateEnv(program, envName, postmanCred, updateEnvId, values, replaceEnv);
+    data = await updateEnv(program, envName, postmanCred, updateEnvId, values, replaceEnv);
   } else {
-    const data = await callPostmanApi(postmanCred, POSTMAN_ENV_API, 'post', body);
+    data = await callPostmanApi(postmanCred, POSTMAN_ENV_API, 'post', body);
+  }
+
+  if(data) {
+    console.log(data)
+    console.log("🎉 Success 🎉");
   }
 }

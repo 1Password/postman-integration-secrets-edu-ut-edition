@@ -22,6 +22,9 @@ export async function selectSecrets(program) {
       },
     ])
     .then(async (answers) => {
+      if(answers.secrets.length == 0) {
+        program.error("No secrets selected");
+      }
       const answerNames = answers.secrets.map((a) => a.split('|')[0].trim());
       const secretsToInject = secrets.filter((secret) => {
         return answerNames.find((a) => a === secret.title);
