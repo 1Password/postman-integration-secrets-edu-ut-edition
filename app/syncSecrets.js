@@ -12,7 +12,6 @@ export async function syncSecrets(program, postmanSecret, envName) {
 
   const postmanCred = await fetchSecret(program, `${postmanSecret}/credential`);
 
-  // Get the env
   const envs = await callPostmanApi(postmanCred, POSTMAN_ENV_API, 'get', {});
   const envToUpdate = envs.environments.find((env) => env.name == envName);
 
@@ -21,7 +20,6 @@ export async function syncSecrets(program, postmanSecret, envName) {
   }
   const envToUpdateId = envToUpdate.id;
 
-  // Get the env
   const envVars = await callPostmanApi(postmanCred, `${POSTMAN_ENV_API}/${envToUpdateId}`, 'get', {});
 
   const re = new RegExp('op:\/\/');

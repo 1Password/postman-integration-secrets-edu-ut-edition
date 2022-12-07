@@ -32,9 +32,9 @@ export function processCollectionItem(item, secret, authType) {
  * Inject secret and run Newman CLI to execute Collection JSON
  * 
  * @param {any} program - CLI
- * @param {*} collectionPath - Path to Postman Collection JSON
- * @param {*} secretPath - Reference path to the 1Password Secret
- * @param {*} authType - Type of the Authentication 
+ * @param {string} collectionPath - Path to Postman Collection JSON
+ * @param {string} secretPath - Reference path to the 1Password Secret
+ * @param {string} authType - Type of the Authentication 
  */
 export async function runNewman(program, collectionPath, secretPath, authType) {
     let collection = JSON.parse(readFileSync(collectionPath));
