@@ -1,3 +1,5 @@
+This project is a Postman integration with the 1Password CLI that allows users to load API Keys and other secrets stored in 1Password into Postman.
+
 # Table of Contents
 [Description](#description)\
 [Key Features](#key-features)\
@@ -9,20 +11,13 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[inject-secrets](#inject-secrets)
 
 # Description
-More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration tool to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
-# Key Features
-There are the following commands which can be used:\
-`run-collection`\
-&nbsp;&nbsp;&nbsp;&nbsp;Run a Postman collection with specified 1Password secret.\
-`inject-secrets`\
-&nbsp;&nbsp;&nbsp;&nbsp;Inject 1Password secrets into a your Postman account (as variables in a Postman environment).\
-`sync-secrets`\
-&nbsp;&nbsp;&nbsp;&nbsp;Synchronize previously injected 1Password secrets in a Postman Environment.
+More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration with the 1Password CLI to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
 # Getting Started
 ## Prerequisites
-
+- [1Password Account](https://1password.com)
 - [1Password CLI](https://developer.1password.com/docs/cli/get-started)
 - [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- [Postman](https://www.postman.com)
 
 ## Installation
 
@@ -42,10 +37,17 @@ Use the command as follows:
 ```
 node ./app/commander run-collection op://<VAULT-NAME>/<REQUEST-AUTH-DETAILS-ITEM> <PATH-TO-COLLECTION-JSON> --type <AUTH-TYPE>
 ```
+The following authorization types are currently supported:
+- No Auth (`noauth`)
+- Basic Auth (`basic`)
+- Bearer Token (`token`)
+
+For information on the fields of each authorization type, please see the [YAML file](app/authType.yml).\
+For more information on the authorization types, please check the [Postman documentation](https://learning.postman.com/docs/sending-requests/authorization/).
 
 #### Example
 - Run the command with:
-  - Path to the authorization details in 1Password (e.g. `op://Personal/Basic-Auth`)
+  - [Secret reference](https://developer.1password.com/docs/cli/secrets-reference-syntax/) to a 1Password item storing the authorization details (e.g. `op://Personal/Basic-Auth`)
   - Path to the collection JSON (e.g. `./postman-collection-basic`)
   - Authorization type (e.g. `basic`)
 - 1Password CLI will require authentication to access the secrets
@@ -123,7 +125,7 @@ Option | Description | Optional | Default | Example
 
 ## `sync-secrets`
 
-Synchronize previously injected 1Password secrets in a Postman Environment. 
+Synchronize previously injected 1Password secrets in a Postman Environment. This command updates your postman environment to contain the latest version of your secrets stored in 1Password.
 
 ### Required Setup
 
@@ -162,4 +164,4 @@ Option | Description | Optional | Default | Example
 
 # License
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](license)
