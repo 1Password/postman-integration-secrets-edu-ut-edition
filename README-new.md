@@ -81,6 +81,8 @@ Use the command as follows:
 node ./app/commander.js inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME> -r
 ```
 
+**Postman Tip**: You can only use the variable in your requests if the environment the variable is in is set to `Active`. You may want to run this command on an already active environment that you are using, to do so, provide the name of the environment with the `-e` flag and avoid using the `-r` flag since you will lose all pre-existing variables in that environment. More details about the flags are below.
+
 #### Example
 - Run the command 
   - *Note*: You can omit the `-s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH>` flag if you have completed the Optional Step in the Setup above
@@ -115,6 +117,44 @@ Option | Description | Optional | Default | Example
 `-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential. | Yes | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME` 
 `-e <POSTMAN-ENV-NAME>` | The name of the Postman environment to inject secrets into. | Yes | `1password-secrets` | `-e secrets-from-1password` 
 `-r` | Replace the entire Postman environment such that it only contains selected secrets. | Yes | By default this flag is not applied and selected secrets are merged into the environment with existing secrets. | `-r` 
+
+## `sync-secrets`
+
+Synchronize previously 1Password secrets in a Postman Environment. 
+
+### Required Setup
+
+Same setup as `inject-secrets` command.
+
+### Usage
+
+Use the command as follows: 
+
+```
+node ./app/commander.js sync-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME>
+```
+
+**Postman Note**: Postman stores 2 versions of each variable in the environment, an `Initial Value` and a `Current Value`. This command only updates the `Initial Value` version of the variable and it is the `Current Value` version that referencing the variable will replace. To set the `Current Value` to be the `Initial Value` after running this command, simply select the `Reset All` option (to update `Current Value` of all variables, including ones not updated by running this command) or select `Reset` from the 3-dot menu of the individual variables (to update `Current Value` of only that variable). 
+
+#### Example
+- Run the command 
+  - *Note*: You can omit the `-s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH>` flag if you have completed the Optional Step in the Setup
+  - 1Password CLI will require authentication to access the secrets
+
+```
+> node ./app/commander.js sync-secrets -s op://test-postman-integration/postman-api-key -e 1password-secrets
+```
+
+- After the command finishes executing, the secrets will be updated in your Postman account under an environment named `1password-secrets`
+  - *Note*: Only the name of the variables that correspond to the 1Password reference path of the secret fields will be updated with the latest value. All other variables will be left untouched.
+
+
+### Flags
+
+Option | Description | Optional | Default | Example
+--- | --- | --- | --- | ---
+`-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential. | Yes | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME` 
+`-e <POSTMAN-ENV-NAME>` | The name of the Postman environment to contain the previously injected secrets | Yes | `1password-secrets` | `-e secrets-from-1password` 
 
 
 # License
