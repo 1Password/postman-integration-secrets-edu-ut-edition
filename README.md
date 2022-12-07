@@ -14,10 +14,10 @@ This project is a Postman integration with the 1Password CLI that allows users t
 More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration with the 1Password CLI to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
 # Getting Started
 ## Prerequisites
-- [1Password Account](https://1password.com)
-- [1Password CLI](https://developer.1password.com/docs/cli/get-started)
-- [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-- [Postman](https://www.postman.com)
+- Having a [1Password Account](https://1password.com)
+- Having [1Password CLI](https://developer.1password.com/docs/cli/get-started) installed
+- Having [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) installed
+- Having [Postman](https://www.postman.com)
 
 ## Installation
 
