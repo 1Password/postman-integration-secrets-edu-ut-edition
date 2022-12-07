@@ -80,7 +80,7 @@ import { validateCli, item } from "@1password/op-js";
  export async function fetchBasicAuthCredentials(program, secretItemPath) {
   const usernameField = `${secretItemPath}/username`;
   const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/credential`; 
+  const passwordField = `${secretItemPath}/password`; 
   const password = await fetchSecret(program, passwordField);
 
   if (!password || !username) {
@@ -99,7 +99,7 @@ import { validateCli, item } from "@1password/op-js";
  */
  export async function fetchBearerTokenCredentials(program, secretItemPath) {
   
-  const tokenField = `${secretItemPath}/credential`;
+  const tokenField = `${secretItemPath}/token`;
   const token = await fetchSecret(program, tokenField);
   if (!token) {
     program.error("Invalid Secret Path");
