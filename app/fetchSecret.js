@@ -140,7 +140,7 @@ import { validateCli, item } from "@1password/op-js";
  export async function fetchDigestAuthCredentials(program, secretItemPath) {
   const usernameField = `${secretItemPath}/username`;
   const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/credential`; 
+  const passwordField = `${secretItemPath}/password`; 
   const password = await fetchSecret(program, passwordField);
   const algorithmField = `${secretItemPath}/algorithm`;
   const algorithm = await fetchSecret(program, algorithmField);
