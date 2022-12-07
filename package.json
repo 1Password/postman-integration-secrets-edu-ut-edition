@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "run-collection": "node ./app/commander run-collection",
+    "inject-secrets": "node ./app/commander inject-secrets"
   },
   "repository": {
     "type": "git",
