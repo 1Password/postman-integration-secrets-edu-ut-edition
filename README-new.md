@@ -58,7 +58,7 @@ export POSTMAN_API_KEY_PATH=op://VAULT/ITEM-NAME
 Use the command as following: 
 
 ```
-npm run inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME> -r
+node ./app/commander.js inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME> -r
 ```
 
 #### Example
@@ -67,7 +67,7 @@ npm run inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-E
   - 1Password CLI will require authentication to access the secrets
 
 ```
-> npm run inject-secrets -s op://test-postman-integration/postman-api-key -e 1password-secrets
+> node ./app/commander.js inject-secrets -s op://test-postman-integration/postman-api-key -e 1password-secrets
 
 ? Please select the secrets you want to inject into Postman
 
