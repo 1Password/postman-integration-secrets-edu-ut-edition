@@ -1,50 +1,165 @@
-## 1password-postman-integration
+# Table of Contents
+[Description](#description)\
+[Key Features](#key-features)\
+[Getting Started](#getting-started)\
+&nbsp;&nbsp;&nbsp;&nbsp;[Prerequisites](#prerequisites)\
+&nbsp;&nbsp;&nbsp;&nbsp;[Installation](#installation)\
+[Commands](#commands)\
+&nbsp;&nbsp;&nbsp;&nbsp;[run-collection](#run-collection)\
+&nbsp;&nbsp;&nbsp;&nbsp;[inject-secrets](#inject-secrets)
 
-## Description 
- * Provide a high-level description of your application and it's value from an end-user's perspective
- * What is the problem you're trying to solve?
- * Is there any context required to understand **why** the application solves this problem?
+# Description
+More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration tool to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
+# Key Features
+There are the following commands which can be used:\
+`run-collection`\
+&nbsp;&nbsp;&nbsp;&nbsp;Run a Postman collection with specified 1Password secret.\
+`inject-secrets`\
+&nbsp;&nbsp;&nbsp;&nbsp;Inject 1Password secrets into a your Postman account (as variables in a Postman environment).\
+`sync-secrets`\
+&nbsp;&nbsp;&nbsp;&nbsp;Synchronize previously injected 1Password secrets in a Postman Environment.
+# Getting Started
+## Prerequisites
 
-## Key Features
- * Described the key features in the application that the user can access
- * Provide a breakdown or detail for each feature that is most appropriate for your application
- * This section will be used to assess the value of the features built
+- [1Password CLI](https://developer.1password.com/docs/cli/get-started)
+- [Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-## Instructions
+## Installation
 
-### Setup
-  * [Generate a Postman API Key](https://learning.postman.com/docs/developer/intro-api/#generating-a-postman-api-key) to (required to allow CLI to inject secrets)
-  * Store the Postman API Key in 1Password as an API Credential: ![](./assets/1password-postman-api.png)
+- Clone the repository
+- Run `npm install`
 
-### Commands 
+# Commands
+## `run-collection`
+Run a Postman collection with specified 1Password secret.
 
-  * `inject-secrets`
+### Required Setup
+To use this command, a Postman collection JSON is required. Please follow the steps below:
+- [Exporting a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)
+- Create an API Credential item in your 1Password vault with the authorization credentials to the request.
+### Usage
+Use the command as follows:
+```
+node ./app/commander run-collection op://<VAULT-NAME>/<REQUEST-AUTH-DETAILS-ITEM> <PATH-TO-COLLECTION-JSON> --type <AUTH-TYPE>
+```
 
-  Option | Description | Optional | Default | Example
-  --- | --- | --- | --- | ---
-  `-s <POSTMAN-SECRET-PATH>` | The path in 1password to your Postman API Credential. | Yes | If this value is not passed in, the existence of the `POSTMAN_API_CREDENTIAL` environment variable by default. | `-s op://VAULT/SECRET-NAME` 
-  `-e <POSTMAN-ENV-NAME>` | The name of the Postman Environment to inject secrets into. | Yes | `1password-secrets` | `-e secrets-from-1password` 
-  `-r` | Replace the entire Postman environment such that it only contains selected secrets. | Yes | Default behaviour is to merge selected secrets into environment with existing secrets. | `-r` 
+#### Example
+- Run the command with:
+  - Path to the authorization details in 1Password (e.g. `op://Personal/Basic-Auth`)
+  - Path to the collection JSON (e.g. `./postman-collection-basic`)
+  - Authorization type (e.g. `basic`)
+- 1Password CLI will require authentication to access the secrets
+- Request should be run without having to copy paste any of the required secrets.
 
-  #### Example: 
-  ![](./assets/inject-secrets-demo.gif)
+### Flags
+Option | Description | Optional | Default | Example
+--- | --- | --- | --- | ---
+`-s <AUTH-TYPE>` | The type of the authorization for the Postman request. | Yes | `noauth` | `-type basic` 
+
+## `inject-secrets`
+
+Inject 1Password secrets into your Postman account (as variables in a Postman environment).
+
+### Required Setup
+
+To use this command, an integration with Postman API will be required. Please follow steps below:
+
+- [Generate a Postman API Key](https://learning.postman.com/docs/developer/intro-api/#generating-a-postman-api-key)
+- Copy your Postman API Key and place it into your 1Password vault (in the credential field of an API Key item), for example:
+
+<img src="./assets/postman-api-key.png" alt="Postman API Key Storage in 1Password" width="500"/> \
+
+**Optional Step**:
+- For convenience, place the 1Password reference path to the Postman API Key in an environment variable named `POSTMAN_API_KEY_PATH`:
+
+```
+export POSTMAN_API_KEY_PATH=op://VAULT/ITEM-NAME
+```
+
+### Usage
+
+Use the command as follows: 
+
+```
+node ./app/commander.js inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME> -r
+```
+
+**Postman Tip**: You can only use the variable in your requests if the environment the variable is in is set to `Active`. You may want to run this command on an already active environment that you are using, to do so, provide the name of the environment with the `-e` flag and avoid using the `-r` flag since you will lose all pre-existing variables in that environment. More details about the flags are below.
+
+#### Example
+- Run the command 
+  - *Note*: You can omit the `-s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH>` flag if you have completed the Optional Step in the Setup above
+  - 1Password CLI will require authentication to access the secrets
+
+```
+> node ./app/commander.js inject-secrets -s op://test-postman-integration/postman-api-key -e 1password-secrets
+
+? Please select the secrets you want to inject into Postman
+
+ (Press <space> to select, <a> to toggle all, <i> to invert selection, and <enter> to proceed)
+ ──────────────
+❯◯ 🎉 Welcome to 1Password!           |                      Personal
+ ◯ 1Password Account                  |                      Personal
+ ◯ login                              |      test-postman-integration
+ ◯ basic-auth                         |      test-postman-integration
+ ◯ postman-api-key                    |      test-postman-integration
+(Move up and down to reveal more choices)
+```
+
+- Follow the directions to select the secrets you want to inject into your Postman account
+  - In this example, the secrets `login`, `basic-auth`, and `postman-api-key` were selected to be injected into Postman
+- After the command finishes executing, the secrets will able available for you to use in your Postman account under an environment named `1password-secrets`
+  - *Note*: The name of the secrets correspond to the 1Password reference path of the secret fields
+
+<img src="./assets/postman-env.png" alt="Postman API Key Storage in 1Password" width="700"/>
+
+### Flags
+
+Option | Description | Optional | Default | Example
+--- | --- | --- | --- | ---
+`-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential. | Yes | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME` 
+`-e <POSTMAN-ENV-NAME>` | The name of the Postman environment to inject secrets into. | Yes | `1password-secrets` | `-e secrets-from-1password` 
+`-r` | Replace the entire Postman environment such that it only contains selected secrets. | Yes | By default this flag is not applied and selected secrets are merged into the environment with existing secrets. | `-r` 
+
+## `sync-secrets`
+
+Synchronize previously injected 1Password secrets in a Postman Environment. 
+
+### Required Setup
+
+Same setup as `inject-secrets` command.
+
+### Usage
+
+Use the command as follows: 
+
+```
+node ./app/commander.js sync-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME>
+```
+
+**Postman Note**: Postman stores 2 versions of each variable in the environment, an `Initial Value` and a `Current Value`. This command only updates the `Initial Value` version of the variable and it is the `Current Value` version that referencing the variable will replace. To set the `Current Value` to be the `Initial Value` after running this command, simply select the `Reset All` option (to update `Current Value` of all variables, including ones not updated by running this command) or select `Reset` from the 3-dot menu of the individual variables (to update `Current Value` of only that variable). 
+
+#### Example
+- Run the command 
+  - *Note*: You can omit the `-s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH>` flag if you have completed the Optional Step in the Setup
+  - 1Password CLI will require authentication to access the secrets
+
+```
+> node ./app/commander.js sync-secrets -s op://test-postman-integration/postman-api-key -e 1password-secrets
+```
+
+- After the command finishes executing, the secrets will be updated in your Postman account under an environment named `1password-secrets`
+  - *Note*: Only the name of the variables that correspond to the 1Password reference path of the secret fields will be updated with the latest value. All other variables will be left untouched.
 
 
- ## Development requirements
- * If a developer were to set this up on their machine or a remote server, what are the technical requirements (e.g. OS, libraries, etc.)?
- * Briefly describe instructions for setting up and running the application (think a true README).
- 
- ## Deployment and Github Workflow
- 
- We wanted our team’s developer workflow to follow at least the following requisites; efficiently implement incremental changes, asynchronous development, reduce blockers and timely feedback. These requisites enable our team to share a codebase, avoid conflicts and deploy the mvp locally. 
+### Flags
 
-Firstly, our team was able to share the mvp codebase with the version control GIT and the code hosting platform GitHub. Each team member would be responsible for obtaining and maintaining a local copy of the repository. At a high level, each team member would ‘clone’ the remote repository onto their local machine, then maintain their local repository by ‘pulling’ the latest remote master branch into your current branch. Alternatively, each team member was recommended to instead maintain their local repository by ‘rebasing’ your current changes by updating your local branch with the most up to date master branch. This method was preferred since this streamlines our main branch into 1 uniform branch, making it easier to rollback a feature and having a more readable branch history.
+Option | Description | Optional | Default | Example
+--- | --- | --- | --- | ---
+`-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential. | Yes | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME` 
+`-e <POSTMAN-ENV-NAME>` | The name of the Postman environment to contain the previously injected secrets | Yes | `1password-secrets` | `-e secrets-from-1password` 
 
-Secondly, our team avoided conflicts by integrating with the feature branch developer workflow that was mentioned during class. Leveraging this workflow paradigm enabled us to  separate different features from the main code base. Unlike a centralised workflow (developers push and pull from the same master branch), we aren't pushing and pulling from the same repo. Rather, we independently make changes in a "sandboxed" feature branch that is then reviewed and merged into the remote master branch. Ultimately, this makes continuous integration easier since team members can work on prototypes without compromising the central working master branch. To add on, whenever a team member makes a pull request to merge their remote feature branch into the remote master branch, it requires at least 1 code review from another member on the team. We only required a single code review as we believed the complexity of the mvp did not warrant more than 1 code review and requiring more than 1 code review will slow down our code throughput. Finally, if a developer is concerned about which changes to accept during a merge conflict, he/she is encouraged to look at the Git blame of the file(s) involved in the conflict and to individually contact the team member you have a conflict with.
 
-Finally, due to the strict requirements from our partner 1Password(not to be deployed on an externally hosted server; must interact directly with the client machine) we were unable to deploy our mvp. However, we were still able to follow continuous integration by leveraging GitHub actions. At a high level, this tool enables us to build & automatically run tests for the mvp on a remote server. This becomes very useful when a developer opens a pull request( how are we able to guarantee each pull request can be successfully merged into the remote master?). For every pull request, GitHub will run our CI build configuration file to assert whether the feature branch is eligible to be merged with the remote master branch. Once CI asserts true for all the checks, the developer can now request a code review from another developer on the team. After a successful code review, the developer’s feature branch finally gets merged into the remote master branch(source of truth). It is highly encouraged on our team to run our custom test script before a pull request is made(making a pull request with failing tests will not pass CI).
+# License
 
-## License
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-Based on the need, we choose MIT license. Since MIT license perfectly matches with both 1Password and our team needs, it allows both commercial and private use, poeple can modify based on that for personal use. However, the copyrught and license myst be included with the licensed material. The limitation is that no warranty is not provided and liability.

@@ -3,6 +3,14 @@ import { readFileSync } from "fs";
 
 import newman from "newman";
 
+/**
+ * Process Postman collection to inject secret
+ * 
+ * @param {any} item - Collection item
+ * @param {any} secret - 1Password Secret 
+ * @param {string} authType - Type of authentication
+ * @returns Collection Item
+ */
 export function processCollectionItem(item, secret, authType) {
     if (item.request.auth.type.toLowerCase() !== authType) {
         throw new Error("Auth type does not match with template");
@@ -20,6 +28,14 @@ export function processCollectionItem(item, secret, authType) {
     return item;
 }
 
+/**
+ * Inject secret and run Newman CLI to execute Collection JSON
+ * 
+ * @param {any} program - CLI
+ * @param {string} collectionPath - Path to Postman Collection JSON
+ * @param {string} secretPath - Reference path to the 1Password Secret
+ * @param {string} authType - Type of the Authentication 
+ */
 export async function runNewman(program, collectionPath, secretPath, authType) {
     let collection = JSON.parse(readFileSync(collectionPath));
     // TODO: add more auth types
