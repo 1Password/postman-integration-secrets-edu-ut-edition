@@ -9,13 +9,13 @@
 &nbsp;&nbsp;&nbsp;&nbsp;[inject-secrets](#inject-secrets)
 
 # Description
-TODO: Copy description from 301 Repo
+More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration tool to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
 # Key Features
 There are the following commands which can be used:\
 `run-collection`\
-TODO: Description of command goes here\
+&nbsp;&nbsp;&nbsp;&nbsp;Run a Postman collection with specified 1Password secret.\
 `inject-secrets`\
-TODO: Description of command goes here
+&nbsp;&nbsp;&nbsp;&nbsp;Inject 1Password secrets into a your Postman account (as variables in a Postman environment).
 # Getting Started
 ## Prerequisites
 
@@ -31,11 +31,31 @@ TODO: Description of command goes here
 ## `run-collection`
 Run a Postman collection with specified 1Password secret.
 
+### Required Setup
+To use this command, a Postman collection JSON is required. Please follow the steps below:
+- [Exporting a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)
+- Create a API Key item in your 1Password vault with the credentials to the request.
+### Usage
+Use the command as follows:
+```
+node ./app/commander run-collection op://<VAULT-NAME>/<REQUEST-AUTH-DETAILS-ITEM> <PATH-TO-COLLECTION-JSON> --type <AUTH-TYPE>
+```
+
 ### Flags
-TODO: Table
+Option | Description | Optional | Default | Example
+--- | --- | --- | --- | ---
+`-s <AUTH-TYPE>` | The type of the authorization for the Postman request. | Yes | `noauth` | `-type basic` 
+
+#### Example
+- Run the command with:
+  - Path to the authentication details in 1Password (e.g. `op://Personal/Basic-Auth`)
+  - Path to the collection JSON (e.g. `./postman-collection-basic`)
+  - Authentication type (e.g. `basic`)
+- Request should be run without having to copy paste and of the required secrets.
+
 ## `inject-secrets`
 
-Command to inject 1Password secrets into a your Postman account (as variables in a Postman environment).
+Inject 1Password secrets into your Postman account (as variables in a Postman environment).
 
 ### Required Setup
 
@@ -55,7 +75,7 @@ export POSTMAN_API_KEY_PATH=op://VAULT/ITEM-NAME
 
 ### Usage
 
-Use the command as following: 
+Use the command as follows: 
 
 ```
 node ./app/commander.js inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME> -r
