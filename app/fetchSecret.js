@@ -120,7 +120,7 @@ import { validateCli, item } from "@1password/op-js";
   const key = await fetchSecret(program, keyField);
   const valueField = `${secretItemPath}/value`; 
   const value = await fetchSecret(program, valueField);
-  const inField = `${secretItemPath}/in`;
+  const inField = `${secretItemPath}/addTo`;
   const inVal = await fetchSecret(program, inField);
 
   if (!key || !value || !inVal) {
@@ -128,7 +128,7 @@ import { validateCli, item } from "@1password/op-js";
     return {};
   }
 
-  return { key, value, inVal };
+  return { key:key, value:value , in:inVal };
 }
 
 /**
@@ -140,7 +140,7 @@ import { validateCli, item } from "@1password/op-js";
  export async function fetchDigestAuthCredentials(program, secretItemPath) {
   const usernameField = `${secretItemPath}/username`;
   const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/password`; 
+  const passwordField = `${secretItemPath}/credential`; 
   const password = await fetchSecret(program, passwordField);
   const algorithmField = `${secretItemPath}/algorithm`;
   const algorithm = await fetchSecret(program, algorithmField);
@@ -204,7 +204,7 @@ import { validateCli, item } from "@1password/op-js";
  export async function fetchNTLMAuthCredentials(program, secretItemPath) {
   const usernameField = `${secretItemPath}/username`;
   const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/password`; 
+  const passwordField = `${secretItemPath}/credential`; 
   const password = await fetchSecret(program, passwordField);
 
   if (!username || !password) {
