@@ -1,4 +1,4 @@
-import { fetchBasicAuthCredentials, fetchBearerTokenCredentials } from "./fetchSecret.js";
+import { fetchAPIKeyCredentials, fetchAWSSignatureCredentials, fetchBasicAuthCredentials, fetchBearerTokenCredentials, fetchEdgeGridCredentials, fetchHawkAuthCredentials, fetchNTLMAuthCredentials } from "./fetchSecret.js";
 import { readFileSync } from "fs";
 
 import newman from "newman";
@@ -24,7 +24,12 @@ export async function runNewman(program, collectionPath, secretPath, authType) {
     let collection = JSON.parse(readFileSync(collectionPath));
     // TODO: add more auth types
     const funcMap = {"basic": fetchBasicAuthCredentials,
-                     "bearer": fetchBearerTokenCredentials};
+                     "bearer": fetchBearerTokenCredentials,
+                     "hawk": fetchHawkAuthCredentials,
+                     "apikey": fetchAPIKeyCredentials,
+                     "awsv4": fetchAWSSignatureCredentials,
+                     "ntlm": fetchNTLMAuthCredentials,
+                     "edgegrid": fetchEdgeGridCredentials};
     if (authType !== "noauth") {
         const secret = await funcMap[authType](program, secretPath);
         for (let item of collection.item) {
