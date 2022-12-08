@@ -1,8 +1,8 @@
+# 1Password Postman Integration
 This project is a Postman integration with the 1Password CLI that allows users to load API Keys and other secrets stored in 1Password into Postman.
 
 # Table of Contents
 [Description](#description)\
-[Key Features](#key-features)\
 [Getting Started](#getting-started)\
 &nbsp;&nbsp;&nbsp;&nbsp;[Prerequisites](#prerequisites)\
 &nbsp;&nbsp;&nbsp;&nbsp;[Installation](#installation)\
@@ -31,7 +31,7 @@ Run a Postman collection with specified 1Password secret.
 
 ### Required Setup
 To use this command, a Postman collection JSON is required. Please follow the steps below:
-- [Exporting a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)
+- [Export a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)
 <img src="./assets/postman-export.png" alt="Postman API Key Storage in 1Password" width="500"/> 
 
 - Create an API Credential item in your 1Password vault with the authorization credentials to the request. \
