@@ -52,9 +52,9 @@ The following authorization types are currently supported:
 - OAuth 1.0 (`oauth1`)
 - OAuth 2.0 (`oauth2`)
 - Hawk Authentication (`hawk`)
-- AWS Signature (`aws`)
+- AWS Signature (`awsv4`)
 - NTLM Authentication [Beta] (`ntlm`)
-- Akamai EdgeGrid (`akamai`)
+- Akamai EdgeGrid (`edgegrid`)
 
 For information on the fields of each authorization type, please see the [YAML file](app/authType.yml).\
 For more information on the authorization types, please check the [Postman documentation](https://learning.postman.com/docs/sending-requests/authorization/).
