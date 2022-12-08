@@ -1,33 +1,55 @@
 noauth:
 apikey:
-  Key: 
+  Key:
     required: true
-  Value: 
+    type: string
+    variant: key
+  Value:
     required: true
-  AddTo: 
+    type: string
+    variant: value
+  AddTo:
     required: false
+    type: string
+    variant: in
     options:
       - Header
       - QueryParams
 bearer:
   Token: 
     required: true
+    type: string
+    variant: token
 basic:
   Username: 
     required: true
+    type: string
+    variant: username
   Password: 
     required: true
+    type: string
+    variant: password
 digest:
   Username: 
     required: true
+    type: string
+    variant: username
   Password: 
     required: true
+    type: string
+    variant: password
   Realm: 
     required: false
+    type: string
+    variant: realm
   Nonce:
     required: false
+    type: string
+    variant: nonce
   Algorithm: 
     required: false
+    type: string
+    variant: algorithm
     options:
       - MD5
       - MD5-sess
@@ -39,22 +61,34 @@ digest:
       MD5
   qop: 
     required: false
+    type: string
+    variant: qop
   NonceCount:
     required: false
+    type: string
+    variant: nonceCount
   ClientNonce:
     required: false
+    type: string
+    variant: clientNonce
   Opaque:
     required: false
+    type: string
+    variant: opaque
 oauth1:
   AddAuthDataTo:
-    required: true
+    required: false
+    type: string
+    variant: addTokenTo
     options:
-      - RequestBody/RequestURL
-      - RequestHeaders
+      - queryParams
+      - headers
     default:
-      RequestBody/RequestURL
+      queryParams
   SignatureMethod:
-    required: true
+    required: false
+    type: string
+    variant: signatureMethod
     options:
       - HMAC-SHA1
       - HMAC-SHA256
@@ -67,94 +101,155 @@ oauth1:
       HMAC-SHA1
   ConsumerKey:
     required: true
+    type: string
+    variant: consumerKey
   ConsumerSecret:
     required: true
+    type: string
+    variant: consumerSecret
   AccessToken:
     required: true
+    type: string
+    variant: token
   TokenSecret:
     required: true
+    type: string
+    variant: tokenSecret
   CallbackUrl:
     required: false
+    type: string
+    variant: callback
   Verifier:
     required: false
+    type: string
+    variant: verifier
   Timestamp:
     required: false
+    type: string
+    variant: timestamp
   Nonce:
     required: false
+    type: string
+    variant: nonce
   Version:
     required: false
+    type: string
+    variant: version
     default: 1.0
   Realm:
     required: false
-oauth2:
-  AddAuthDataTo:
-    required: true
-    options:
-      - RequestURL
-      - RequestHeaders
-    default:
-      RequestURL
-  # too much ...
+    type: string
+    variant: realm
+
 hawk:
   HawkAuthID:
     required: true
+    type: string
+    variant: authId
   HawkAuthKey:
     required: true
+    type: string
+    variant: authKey
   Algorithm:
-    required: true
+    required: false
+    type: string
+    variant: algorithm
     options:
       - sha256
       - sha1
   User:
     required: false
+    type: string
+    variant: user
   Nonce:
     required: false
+    type: string
+    variant: nonce
   ext:
     required: false
+    type: string
+    variant: extraData
   app:
     required: false
+    type: string
+    variant: app
   dlg:
     required: false
+    type: string
+    variant: delegation
   Timestamp:
-    required: false  
-aws:
-  AddAuthDataTo:
-    required: true
-    options:
-      - RequestHeaders
-      - RequestURL
+    required: false
+    type: string
+    variant: timestamp
+  IncludePayloadHash:
+    required: false
+    type: boolean
+    variant: includePayloadHash
+awsv4: #aws signature on postman UI
   AccessKey:
     required: true
+    type: string
+    variant: accessKey
   SecretKey:
     required: true
+    type: string
+    variant: secretKey
   AWSRegion:
     required: false
+    type: string
+    variant: region
   ServiceName:
     required: false
+    type: string
+    variant: service
   SessionToken:
     required: false
+    type: string
+    variant: sessionToken
 ntlm:
   Username:
     required: true
+    type: string
+    variant: username
   Password:
     required: true
+    type: string
+    variant: password
   Domain:
     required: false
+    type: string
+    variant: domain
   Workstation:
     required: false
-akamai:
+    type: string
+    variant: workstation
+edgegrid: # akamai on postman UI
   AccessToken:
     required: true
+    type: string
+    variant: accessToken
   ClientToken:
     required: true
+    type: string
+    variant: clientToken
   ClientSecret:
     required: true
+    type: string
+    variant: clientSecret
   Nonce:
     required: false
+    type: string
+    variant: nonce
   Timestamp:
     required: false
+    type: string
+    variant: timestamp
   BaseURL:
     required: false
+    type: string
+    variant: baseURL
   HeadersToSign:
     required: false
+    type: string
+    variant: headersToSign
   

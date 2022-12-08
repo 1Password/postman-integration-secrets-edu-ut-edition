@@ -20,7 +20,29 @@ const newman = require('newman'); // require newman in your project
 // A route to test get request that requires authentication
 app.get('/main', (req, res, next) => {
     var authheader = req.headers.authorization;
-    console.log(authheader);
+    console.log(req);
+    // ApiKey
+    if ('test' in req.headers){
+        if (req.headers['test'] == 'test'){
+            res.send('successfully authorized!');
+        } else {
+            var err = new Error('not authenticated');
+            res.setHeader('WWW-Authnticate', 'Basic');
+            err.status = 401;
+            return next(err);
+        }
+    }
+    if ('test' in req.query){
+        if (req.query['test'] == 'test'){
+            res.send('successfully authorized!');
+        } else {
+            var err = new Error('not authenticated');
+            res.setHeader('WWW-Authnticate', 'Basic');
+            err.status = 401;
+            return next(err);
+        }
+    }
+    // Basic
     if (authheader.startsWith("Basic")){
         var auth = new Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':');
         var user = auth[0];
@@ -34,6 +56,7 @@ app.get('/main', (req, res, next) => {
             return next(err);
         }
     }
+    //Bearer
     if (authheader.startsWith("Bearer")){
         if (authheader.split(' ')[1] == 'test'){
             res.send('successfully authorized!');
@@ -44,6 +67,8 @@ app.get('/main', (req, res, next) => {
             return next(err);
         }
     }
+    //
+
 })
 
 app.listen(3000, () => {

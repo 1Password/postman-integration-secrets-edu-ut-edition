@@ -1,25 +1,81 @@
-import {runNewman} from './runNewman.js';
-import {processCollectionItem} from './runNewman.js';
-import {expect, jest} from "@jest/globals";
-test('processCollectionItem', () => {
-    const item = {
-        request: {
-            auth: {
-                "type":"basic",
-                "basic": [{
-                    "key": "username",
-                    "value": "{{api-secret-username}}",
-                    "type": "string"
-                    },
-                    {"key":"password",
-                     "value":"{{api-secret-password}}",
-                     "type":"string"}]
-            }
+import {expect} from "@jest/globals";
+import {processCollection, validateInputs} from './runNewman.js';
+
+/**
+ * Test function validateInputs for the case "noauth" from command line, but
+ * find auth type from collection, expected function to return the auth type
+ * from collection; also delete the auth data from collection.
+ */
+test(validateInputs, () => {
+    const authType = "noauth";
+    let collection = {
+        "item": [],
+        "auth": {
+            "type": "basic",
+            "basic": []
         }
     };
-    let secret = {"username":"test-username", "password":"test-password"};
-    processCollectionItem(item, secret, "basic");
-    expect(item.request.auth.basic[0].value).toBe("test-username");
-    expect(item.request.auth.basic[1].value).toBe("test-password");
+    const authType_rt = validateInputs(authType, collection);
+    expect(authType_rt).toBe("basic");
+    expect(collection.auth).toBe(undefined)
+});
+/**
+ * Test function validateInputs for the case "noauth" from command line,
+ * and no auth type from collection, expected function to return "noauth".
+ */
+test(validateInputs, () => {
+    const authType = "noauth";
+    const collection = {"item": []};
+    const authType_rt = validateInputs(authType, collection);
+    expect(authType_rt).toBe("noauth")
+});
 
+/**
+ * Test function validateInputs for the case specific authType given from
+ * command line, return the same authType no matter what the authType is in the
+ * collection; also delete the auth data from collection.
+ */
+test(validateInputs, () => {
+    const authType = "basic";
+    const collection = {
+        "item": [],
+        "auth": {
+            "type": "aws4",
+            "aws4": []
+        }
+    };
+    const authType_rt = validateInputs(authType, collection);
+    expect(authType_rt).toBe("basic");
+    expect(collection.auth).toBe(undefined)
+});
+
+/**
+ * Test function processCollection, expected to add the auth data based on
+ * the output from fetchAuthCredentials to the collection.
+ */
+test('processCollection', () => {
+    const collection = {"item": []}
+    const authType = "basic";
+    const secret = {
+        "username": ["test-username", "string", "username"],
+        "password": ["test-password", "string", "password"]
+    };
+    processCollection(collection, authType, secret);
+    const expected = {
+        "auth": {
+            "basic": [{
+                "key": "username",
+                "type": "string",
+                "value": "test-username"
+            },
+                {
+                    "key": "password",
+                    "type": "string",
+                    "value": "test-password"
+                }],
+            "type": "basic"
+        },
+        "item": []
+    };
+    expect(collection).toStrictEqual(expected)
 });
