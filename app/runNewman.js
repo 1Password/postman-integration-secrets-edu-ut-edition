@@ -1,5 +1,4 @@
 import {readFileSync} from "fs";
-
 import newman from "newman";
 import {fetchAuthCredentials} from "./fetchSecret.js";
 
@@ -13,7 +12,7 @@ import {fetchAuthCredentials} from "./fetchSecret.js";
  * @returns {string} authType - The type of authentication to use.
  */
 
-function validateInputs(authType, collection) {
+export function validateInputs(authType, collection) {
     if (authType !== "noauth") {
         delete collection.auth
         for (let item of collection.item) {
@@ -42,7 +41,7 @@ function validateInputs(authType, collection) {
  * @param secret: The secret object containing the data.
  */
 
-function processCollection(collection, authType, secret) {
+export function processCollection(collection, authType, secret) {
     let authElement = {};
     authElement["type"] = authType;
     authElement[authType] = [];
