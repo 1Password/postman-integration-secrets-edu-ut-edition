@@ -1,5 +1,5 @@
 # 1Password Postman Integration
-This project is a Postman integration with the 1Password CLI that allows users to load API Keys and other secrets stored in 1Password into Postman.
+This project is a [Postman](https://learning.postman.com/docs/getting-started/introduction/) integration with the [1Password CLI](https://developer.1password.com/docs/cli/) that allows users to load API Keys and other secrets stored in 1Password into Postman.
 
 # Table of Contents
 [Description](#description)\
