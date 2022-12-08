@@ -9,16 +9,6 @@
 		{
             "name": "bearer-token-request",
             "request": {
-                "auth": {
-                    "type": "bearer",
-                    "bearer": [
-                        {
-                            "key": "token",
-                            "value": "{{bearer-token}}",
-                            "type": "string"
-                        }
-                    ]
-                },
                 "method": "GET",
                 "header": [],
                 "url": {
