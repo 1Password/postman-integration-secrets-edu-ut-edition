@@ -31,8 +31,12 @@ Run a Postman collection with specified 1Password secret.
 
 ### Required Setup
 To use this command, a Postman collection JSON is required. Please follow the steps below:
-- [Exporting a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)
-- Create an API Credential item in your 1Password vault with the authorization credentials to the request.
+- [Exporting a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)\
+<img src="./assets/postman-export.png" alt="Postman API Key Storage in 1Password" width="500"/> 
+- Create an API Credential item in your 1Password vault with the authorization credentials to the request. \
+(**Note: You need to customize field name in the Crendential to match with the [YAML file](app/authType.yml)**)
+<img src="./assets/1p-cred.png" alt="Postman API Key Storage in 1Password" width="500"/> 
+
 ### Usage
 Use the command as follows:
 ```
@@ -42,6 +46,14 @@ The following authorization types are currently supported:
 - No Auth (`noauth`)
 - Basic Auth (`basic`)
 - Bearer Token (`token`)
+- API Key (`apikey`)
+- Digest Auth (`digest`)
+- OAuth 1.0 (`oauth1`)
+- OAuth 2.0 (`oauth2`)
+- Hawk Authentication (`hawk`)
+- AWS Signature (`aws`)
+- NTLM Authentication [Beta] (`ntlm`)
+- Akamai EdgeGrid (`akamai`)
 
 For information on the fields of each authorization type, please see the [YAML file](app/authType.yml).\
 For more information on the authorization types, please check the [Postman documentation](https://learning.postman.com/docs/sending-requests/authorization/).
