@@ -1,20 +1,5 @@
-import {expect, jest} from "@jest/globals";
-import newman from "newman";
+import {expect} from "@jest/globals";
 import {processCollection, validateInputs} from './runNewman.js';
-import {Command} from 'commander';
-
-jest.mock("newman", () => {
-    return {run: jest.fn()};
-});
-jest.mock('commander');
-
-const program = new Command();
-jest.mock('./fetchSecret.js');
-
-afterEach(() => {
-    jest.clearAllMocks();
-});
-
 
 /**
  * Test function validateInputs for the case "noauth" from command line, but
