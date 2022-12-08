@@ -4,6 +4,7 @@ import {runNewman} from "./runNewman.js";
 import { selectSecrets } from './selectSecrets.js';
 import * as yaml from 'js-yaml';
 import * as fs from 'fs';
+import { syncSecrets } from './syncSecrets.js';
 
 const program = new Command();
 const path = process.cwd();
@@ -13,10 +14,10 @@ program
   .version('0.0.1');
 
 program.command('run-collection')
-  .description('Run Postman collection with 1password secret')
+  .description('Run Postman collection with 1Password secret')
   .option('--mode <char>', 'Specify if it is for testing(t) or production(p)', 'p')
   .option('--type <char>', 'Specify the type of authorization', 'NoAuth')
-  .argument('<secret>', '1password secret resource path')
+  .argument('<secret>', '1Password secret resource path')
   .argument('<collection>', 'collection configuration to insert')
   .action((secret, collection, options) => {
     const re = new RegExp('op:\/\/')
@@ -41,7 +42,7 @@ program.command('run-collection')
 
 program.command('inject-secrets')
   .description('Inject Secrets into Postman Environment ')
-  .option('-s, --postman-secret <secret>', '1Password secret path to Postman API Credential. It can also be provided as an environment variable: POSTMAN_API_CREDENTIAL')
+  .option('-s, --postman-secret <secret>', '1Password secret path to Postman API Credential. It can also be provided as an environment variable: POSTMAN_API_KEY_PATH')
   .option('-e, --env <env-name>', '(Optional) name of Postman environment to inject secrets into', '1password-secrets')
   .option('-r, --replace-env', '(Optional) replace the entire Postman environment with secrets instead of merging (default behaviour)')
   .action(async (options) => {
@@ -53,14 +54,36 @@ program.command('inject-secrets')
         return;
       }
       postmanSecret = options.postmanSecret;
-    } else if(process.env.POSTMAN_API_CREDENTIAL ) {
-      postmanSecret = process.env.POSTMAN_API_CREDENTIAL;
+    } else if(process.env.POSTMAN_API_KEY_PATH ) {
+      postmanSecret = process.env.POSTMAN_API_KEY_PATH;
     } else {
       program.error("No Postman API Credential specified.");
       return;
     }
     const secrets = await selectSecrets(program);
     await injectSecretIntoPostman(program, postmanSecret, secrets, {envName: options.env, replaceEnv: !!options.replaceEnv})
+  });
+
+program.command('sync-secrets')
+  .description('Syncro previously injected Secrets in a given Postman Environment')
+  .option('-s, --postman-secret <secret>', '1Password secret path to Postman API Credential. It can also be provided as an environment variable: POSTMAN_API_KEY_PATH')
+  .option('-e, --env <env-name>', 'Name of Postman environment to inject secrets into', '1password-secrets')
+  .action(async (options) => {
+    let postmanSecret;
+    if(options.postmanSecret) {
+      const re = new RegExp('op:\/\/')
+      if(!re.test(options.postmanSecret)){
+        program.error('Error: invalid secret path');
+        return;
+      }
+      postmanSecret = options.postmanSecret;
+    } else if(process.env.POSTMAN_API_KEY_PATH ) {
+      postmanSecret = process.env.POSTMAN_API_KEY_PATH;
+    } else {
+      program.error("No Postman API Credential specified.");
+      return;
+    }
+    await syncSecrets(program, postmanSecret, options.env)
   });
 
 
