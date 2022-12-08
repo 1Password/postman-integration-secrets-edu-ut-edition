@@ -34,7 +34,7 @@ To use this command, a Postman collection JSON is required. Please follow the st
 - [Exporting a Postman Collection](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-collections)
 <img src="./assets/postman-export.png" alt="Postman API Key Storage in 1Password" width="500"/> 
 - Create an API Credential item in your 1Password vault with the authorization credentials to the request. 
-(**Note: You need to customize field name in the Crendential to match with the [YAML file](app/authType.yml)**)
+(**Note**: You need to customize field name in the Crendential to match with the [YAML file](app/authType.yml))
 <img src="./assets/1p-cred.png" alt="Postman API Key Storage in 1Password" width="500"/> 
 
 ### Usage
