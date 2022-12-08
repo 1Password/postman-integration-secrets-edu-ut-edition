@@ -74,10 +74,10 @@ import * as fs from 'fs';
 }
 
 /**
- * Fetch Basic Authentication credentials from 1Password CLI
+ * Fetch Authentication credentials from 1Password CLI
  * @param {any} program - CLI (for logging errors)
  * @param {string} secretPath - Path in 1Password to secret item
- * @returns - Basic Authentication credentials
+ * @returns - Authentication credentials
  */
  export async function fetchAuthCredentials(program, secretItemPath, secretType) {
   let rst = {}
