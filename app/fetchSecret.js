@@ -1,4 +1,6 @@
 import { validateCli, item } from "@1password/op-js";
+import * as yaml from 'js-yaml';
+import * as fs from 'fs';
 
 /**
  * Fetch secret from 1Password CLI
@@ -77,162 +79,30 @@ import { validateCli, item } from "@1password/op-js";
  * @param {string} secretPath - Path in 1Password to secret item
  * @returns - Basic Authentication credentials
  */
- export async function fetchBasicAuthCredentials(program, secretItemPath) {
-  const usernameField = `${secretItemPath}/username`;
-  const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/credential`; 
-  const password = await fetchSecret(program, passwordField);
-
-  if (!password || !username) {
-    program.error("Invalid Secret Path");
-    return {};
+ export async function fetchAuthCredentials(program, secretItemPath, secretType) {
+  let rst = {}
+  const path = process.cwd();
+  const doc = yaml.load(fs.readFileSync(path + '/app/authType.yml', 'utf8'))[secretType];
+  for (let field of Object.keys(doc)) {
+    let cred = await fetchSecret(program, `${secretItemPath}/${field}`);
+    if (!cred){
+      if (doc[field]['required'] == true){
+        program.error(`Invalid Secret Path: ${field} not exist in current 1password secret path`);
+        return {};
+      } else if ('default' in doc[field]) {
+        cred = doc[field]['default'];
+      } else{
+        continue;
+      }
+    }
+    if ('options' in doc[field]){
+      if (!(doc[field]['options'].includes(cred))){
+        program.error(`Invalid Field Value: ${field} value is not valid`);
+        return {};
+      }
+    }
+    rst[field] = [cred, doc[field]['type'], doc[field]['variant']]
   }
 
-  return { username, password };
-}
-
-/**
- * Fetch Bearer Token credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - Bearer Token credentials
- */
- export async function fetchBearerTokenCredentials(program, secretItemPath) {
-  
-  const tokenField = `${secretItemPath}/credential`;
-  const token = await fetchSecret(program, tokenField);
-  if (!token) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { token };
-}
-
-/**
- * Fetch API Key Authentication credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - API key Authentication credentials
- */
- export async function fetchAPIKeyCredentials(program, secretItemPath) {
-  const keyField = `${secretItemPath}/key`;
-  const key = await fetchSecret(program, keyField);
-  const valueField = `${secretItemPath}/value`; 
-  const value = await fetchSecret(program, valueField);
-  const inField = `${secretItemPath}/addTo`;
-  const inVal = await fetchSecret(program, inField);
-
-  if (!key || !value || !inVal) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { key:key, value:value , in:inVal };
-}
-
-/**
- * Fetch Digest Authentication credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - Digest Authentication credentials
- */
- export async function fetchDigestAuthCredentials(program, secretItemPath) {
-  const usernameField = `${secretItemPath}/username`;
-  const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/password`; 
-  const password = await fetchSecret(program, passwordField);
-  const algorithmField = `${secretItemPath}/algorithm`;
-  const algorithm = await fetchSecret(program, algorithmField);
-
-  if (!username || !password || !algorithm) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { username, password, algorithm };
-}
-
-/**
- * Fetch AWS Signature Authentication credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - AWS Signature Authentication credentials
- */
- export async function fetchAWSSignatureCredentials(program, secretItemPath) {
-  const accessKeyField = `${secretItemPath}/accessKey`;
-  const accessKey = await fetchSecret(program, accessKeyField);
-  const secretKeyField = `${secretItemPath}/secretKey`; 
-  const secretKey = await fetchSecret(program, secretKeyField);
-
-  if (!accessKey || !secretKey) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { accessKey, secretKey };
-}
-
-/**
- * Fetch Hawk Authentication credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - Hawk Authentication credentials
- */
- export async function fetchHawkAuthCredentials(program, secretItemPath) {
-  const authKeyField = `${secretItemPath}/authKey`;
-  const authKey = await fetchSecret(program, authKeyField);
-  const authIdField = `${secretItemPath}/authId`; 
-  const authId = await fetchSecret(program, authIdField);
-  const algorithmField = `${secretItemPath}/algorithm`;
-  const algorithm = await fetchSecret(program, algorithmField);
-
-  if (!authKey || !authId || !algorithm) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { authKey, authId, algorithm };
-}
-
-/**
- * Fetch NTLM Authentication credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - NTLM Authentication credentials
- */
- export async function fetchNTLMAuthCredentials(program, secretItemPath) {
-  const usernameField = `${secretItemPath}/username`;
-  const username = await fetchSecret(program, usernameField);
-  const passwordField = `${secretItemPath}/credential`; 
-  const password = await fetchSecret(program, passwordField);
-
-  if (!username || !password) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { username, password };
-}
-
-/**
- * Fetch Akamai EdgeGrid Authentication credentials from 1Password CLI
- * @param {any} program - CLI (for logging errors)
- * @param {string} secretPath - Path in 1Password to secret item
- * @returns - Akamai EdgeGrid Authentication credentials
- */
- export async function fetchEdgeGridCredentials(program, secretItemPath) {
-  const clientSecretField = `${secretItemPath}/clientSecret`;
-  const clientSecret = await fetchSecret(program, clientSecretField);
-  const clientTokenField = `${secretItemPath}/clientToken`; 
-  const clientToken = await fetchSecret(program, clientTokenField);
-  const accessTokenField = `${secretItemPath}/accessToken`;
-  const accessToken = await fetchSecret(program, accessTokenField);
-
-  if (!clientSecret || !clientToken || !accessToken) {
-    program.error("Invalid Secret Path");
-    return {};
-  }
-
-  return { clientSecret, clientToken, accessToken };
+  return rst;
 }
