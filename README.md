@@ -12,7 +12,7 @@ This project is a [Postman](https://learning.postman.com/docs/getting-started/in
 &nbsp;&nbsp;&nbsp;&nbsp;[sync-secrets](#sync-secrets)
 
 # Description
-More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration with the 1Password CLI to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
+More than 20 million users use Postman to make HTTP requests and virtually every request requires passing an API key to authenticate, bringing complexity to developer workflows. Typically, developers have to manually copy tokens, which leads to improper management of secrets and ultimately security risks. Instead, users can store these tokens in 1Password and use this 1Password Postman Integration with the 1Password CLI to fetch the secrets securely and make API calls using Postman without exposing or copying/pasting the secrets.
 # Getting Started
 ## Prerequisites
 - Having a [1Password Account](https://1password.com)
@@ -35,7 +35,7 @@ To use this command, a Postman collection JSON is required. Please follow the st
 <img src="./assets/postman-export.png" alt="Postman API Key Storage in 1Password" width="500"/> 
 
 - Create an API Credential item in your 1Password vault with the authorization credentials to the request. \
-(**Note: You need to customize field name in the Crendential to match with the [YAML file](app/authType.yml)**)
+(**Note: You need to customize field name in the Credential to match with the [YAML file](app/authType.yml)**)
 <img src="./assets/1p-cred.png" alt="Postman API Key Storage in 1Password" width="500"/> 
 
 ### Usage
@@ -50,11 +50,10 @@ The following authorization types are currently supported:
 - API Key (`apikey`)
 - Digest Auth (`digest`)
 - OAuth 1.0 (`oauth1`)
-- OAuth 2.0 (`oauth2`)
 - Hawk Authentication (`hawk`)
-- AWS Signature (`aws`)
+- AWS Signature (`awsv4`)
 - NTLM Authentication [Beta] (`ntlm`)
-- Akamai EdgeGrid (`akamai`)
+- Akamai EdgeGrid (`edgegrid`)
 
 For information on the fields of each authorization type, please see the [YAML file](app/authType.yml).\
 For more information on the authorization types, please check the [Postman documentation](https://learning.postman.com/docs/sending-requests/authorization/).
@@ -65,12 +64,12 @@ For more information on the authorization types, please check the [Postman docum
   - Path to the collection JSON (e.g. `./postman-collection-basic`)
   - Authorization type (e.g. `basic`)
 - 1Password CLI will require authentication to access the secrets
-- Request should be run without having to copy paste any of the required secrets.
+- Request should be run without having to copy and paste any of the required secrets.
 
 ### Flags
-Option | Description | Optional | Default | Example
---- | --- | --- | --- | ---
-`-s <AUTH-TYPE>` | The type of the authorization for the Postman request. | Yes | `noauth` | `-type basic` 
+| Option           | Description                                            | Optional | Default  | Example       |
+|------------------|--------------------------------------------------------|----------|----------|---------------|
+| `-s <AUTH-TYPE>` | The type of the authorization for the Postman request. | Yes      | `noauth` | `-type basic` |
 
 ## `inject-secrets`
 
@@ -124,18 +123,18 @@ node ./app/commander.js inject-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PAT
 
 - Follow the directions to select the secrets you want to inject into your Postman account
   - In this example, the secrets `login`, `basic-auth`, and `postman-api-key` were selected to be injected into Postman
-- After the command finishes executing, the secrets will able available for you to use in your Postman account under an environment named `1password-secrets`
+- After the command finishes executing, the secrets will be available for you to use in your Postman account under an environment named `1password-secrets`
   - *Note*: The name of the secrets correspond to the 1Password reference path of the secret fields
 
 <img src="./assets/postman-env.png" alt="Postman API Key Storage in 1Password" width="700"/>
 
 ### Flags
 
-Option | Description | Optional | Default | Example
---- | --- | --- | --- | ---
-`-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential. | Yes | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME` 
-`-e <POSTMAN-ENV-NAME>` | The name of the Postman environment to inject secrets into. | Yes | `1password-secrets` | `-e secrets-from-1password` 
-`-r` | Replace the entire Postman environment such that it only contains selected secrets. | Yes | By default this flag is not applied and selected secrets are merged into the environment with existing secrets. | `-r` 
+| Option                      | Description                                                                         | Optional | Default                                                                                                         | Example                     |
+|-----------------------------|-------------------------------------------------------------------------------------|----------|-----------------------------------------------------------------------------------------------------------------|-----------------------------|
+| `-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential.                               | Yes      | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default.     | `-s op://VAULT/ITEM-NAME`   |
+| `-e <POSTMAN-ENV-NAME>`     | The name of the Postman environment to inject secrets into.                         | Yes      | `1password-secrets`                                                                                             | `-e secrets-from-1password` |
+| `-r`                        | Replace the entire Postman environment such that it only contains selected secrets. | Yes      | By default this flag is not applied and selected secrets are merged into the environment with existing secrets. | `-r`                        |
 
 ## `sync-secrets`
 
@@ -153,7 +152,7 @@ Use the command as follows:
 node ./app/commander.js sync-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH> -e <POSTMAN-ENV-NAME>
 ```
 
-**Postman Note**: Postman stores 2 versions of each variable in the environment, an `Initial Value` and a `Current Value`. This command only updates the `Initial Value` version of the variable and it is the `Current Value` version that referencing the variable will replace. To set the `Current Value` to be the `Initial Value` after running this command, simply select the `Reset All` option (to update `Current Value` of all variables, including ones not updated by running this command) or select `Reset` from the 3-dot menu of the individual variables (to update `Current Value` of only that variable). 
+**Postman Note**: Postman stores 2 versions of each variable in the environment, an `Initial Value` and a `Current Value`. This command only updates the `Initial Value` version of the variable, and it is the `Current Value` version that referencing the variable will replace. To set the `Current Value` to be the `Initial Value` after running this command, simply select the `Reset All` option (to update `Current Value` of all variables, including ones not updated by running this command) or select `Reset` from the 3-dot menu of the individual variables (to update `Current Value` of only that variable). 
 
 #### Example
 - Run the command 
@@ -170,10 +169,10 @@ node ./app/commander.js sync-secrets -s op://<VAULT-NAME>/<POSTMAN-API-KEY-PATH>
 
 ### Flags
 
-Option | Description | Optional | Default | Example
---- | --- | --- | --- | ---
-`-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential. | Yes | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME` 
-`-e <POSTMAN-ENV-NAME>` | The name of the Postman environment to contain the previously injected secrets | Yes | `1password-secrets` | `-e secrets-from-1password` 
+| Option                      | Description                                                                    | Optional | Default                                                                                                     | Example                     |
+|-----------------------------|--------------------------------------------------------------------------------|----------|-------------------------------------------------------------------------------------------------------------|-----------------------------|
+| `-s <POSTMAN-API-KEY-PATH>` | The path in 1Password to your Postman API Credential.                          | Yes      | If this flag is not used, the value in `POSTMAN_API_KEY_PATH` environment variable will be used by default. | `-s op://VAULT/ITEM-NAME`   |
+| `-e <POSTMAN-ENV-NAME>`     | The name of the Postman environment to contain the previously injected secrets | Yes      | `1password-secrets`                                                                                         | `-e secrets-from-1password` |
 
 
 # License
