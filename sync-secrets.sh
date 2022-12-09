@@ -1,0 +1,1 @@
+node app/commander.js sync-secrets -s op://Developer/postman-secret -e 1password-secret
